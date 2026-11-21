@@ -24,6 +24,7 @@ extern void browser_yield(void);
 
 #include "pc/pc.h"
 #include "pc/launcher.h"
+#include "pc/mods.h"
 #include "pc/touch.h"
 #include "pc/widescreen.h"
 #include "pc/net.h"
@@ -226,6 +227,7 @@ void pc_frame_boundary(void) {
         ++event;
     }
     pc_menu_update();
+    pc_mods_update();
     /* Nothing draws while the overlay pauses the game, so hold the last
      * frame instead of clearing the EFB to black underneath the menu. */
     aurora_preserve_frame_buffer(pc_menu_is_open());

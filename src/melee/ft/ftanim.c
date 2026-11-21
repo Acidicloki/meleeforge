@@ -13,6 +13,9 @@
 #include <melee/lb/lb_00B0.h>
 #include <melee/lb/lbanim.h>
 #include <melee/lb/lbvector.h>
+#ifdef TARGET_PC
+#include "pc/mods.h"
+#endif
 #include <sysdolphin/baselib/aobj.h>
 #include <sysdolphin/baselib/gobj.h>
 #include <sysdolphin/baselib/jobj.h>
@@ -1042,10 +1045,18 @@ void ftAnim_80070308(Fighter_GObj* fighter_gobj)
     Fighter* fp = GET_FIGHTER(fighter_gobj);
     HSD_JObj* jobj = GET_JOBJ(fighter_gobj);
 
-    HSD_JObjAddAnimAll(
-        jobj, NULL,
-        CostumeListsForeachCharacter[fp->kind].costume_list[fp->costume_id].x4,
-        NULL);
+    HSD_MatAnimJoint* matanim =
+        CostumeListsForeachCharacter[fp->kind].costume_list[fp->costume_id].x4;
+#ifdef TARGET_PC
+    /* PORT: MeleeForge custom characters bring their own material animation */
+    {
+        void* mod;
+        if (pc_mods_fighter_matanim(fp->player_idx, fp->kind, &mod)) {
+            matanim = (HSD_MatAnimJoint*) mod;
+        }
+    }
+#endif
+    HSD_JObjAddAnimAll(jobj, NULL, matanim, NULL);
     HSD_JObjReqAnimAll(jobj, 0.0F);
     ftAnim_80070200(fp, &DP(struct ftData_x8, fp->ft_data->x8)->x8, &fp->tobj_list, &fp->dobj_list);
 }

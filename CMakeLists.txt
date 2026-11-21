@@ -229,6 +229,8 @@ set(PC_SOURCES
         src/pc/file_cache.cpp
         src/pc/launcher.cpp
         src/pc/launcher_data.cpp
+        src/pc/mods.cpp
+        extern/miniz/mf_miniz.c # .ssb packages (MIT, extern/miniz/LICENSE)
         src/pc/music_stream.cpp
         src/pc/textures.cpp
         src/pc/updater.cpp

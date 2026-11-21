@@ -81,6 +81,9 @@
 #include <melee/pl/plbonuslib.h>
 #include <melee/pl/pltrick.h>
 #include <melee/sfx/crowdsfx.h>
+#ifdef TARGET_PC
+#include "pc/mods.h"
+#endif
 #include <sysdolphin/baselib/controller.h>
 #include <sysdolphin/baselib/debug.h>
 #include <sysdolphin/baselib/gobj.h>
@@ -150,6 +153,9 @@ void Fighter_800679B0(void)
     HSD_ObjAllocInit(&fighter_dat_attrs_alloc_data, /*size*/ 0x424,
                      /*align*/ 4);
     ft_800852B0();
+#ifdef TARGET_PC
+    pc_mods_scene_reset(); /* PORT: drop MeleeForge models with the costumes */
+#endif
     Fighter_LoadCommonData();
     ft_8008549C();
     ftCo_8009F4A4();
@@ -576,6 +582,16 @@ void Fighter_UnkUpdateCostumeJoint_800686E4(Fighter_GObj* gobj)
     fp->x108_costume_joint = CostumeListsForeachCharacter[fp->kind]
                                  .costume_list[fp->costume_id]
                                  .joint;
+#ifdef TARGET_PC
+    /* PORT: MeleeForge custom characters: a player given one gets its model */
+    {
+        void* mod = pc_mods_fighter_joint(fp->player_idx, fp->kind,
+                                          fp->x108_costume_joint);
+        if (mod != NULL) {
+            fp->x108_costume_joint = (HSD_Joint*) mod;
+        }
+    }
+#endif
     ftPartsPObjSetDefaultClass();
     jobj = HSD_JObjLoadJoint(fp->x108_costume_joint);
     ftPartsPObjClearDefaultClass();

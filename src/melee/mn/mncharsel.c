@@ -297,6 +297,7 @@ static struct CSSDoorsData2 data2 = {
 
 #ifdef TARGET_PC
 #include "pc/region.h"
+#include "pc/mods.h"
 /* The character-select header and token counters are composed by index out
  * of SdSlChr, and the USA build's layout does not exist on PAL: there the
  * digits are string 73 (one byte per glyph, see sislib.static.h), 72 is the
@@ -5473,6 +5474,9 @@ void mnCharSel_Scene_OnEnter(void* arg0)
     }
     mnCharSel_804D6CF4 = 0;
     mnCharSel_802640A0();
+#ifdef TARGET_PC
+    pc_mods_css_enter(); /* MeleeForge: show the skins icon */
+#endif
 }
 
 void mnCharSel_Scene_OnFrame(void)
@@ -5599,6 +5603,10 @@ void mnCharSel_Scene_OnExit(void* unused)
     u64 tmp;
     int i;
     u8 type;
+
+#ifdef TARGET_PC
+    pc_mods_css_exit(); /* MeleeForge: hide the skins icon, settle the costume files */
+#endif
 
     HSD_SisLib_803A5FBC();
     if (mnCharSel_804D6CD0 != NULL) {

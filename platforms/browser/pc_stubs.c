@@ -131,3 +131,25 @@ void pc_slp_tick_end(uint64_t proc_mask) {
 void pc_slp_pre_frame(struct HSD_GObj* gobj) {
     (void)gobj;
 }
+
+/* MeleeForge pop-in characters (src/pc/mods.cpp) are desktop-only: the
+ * browser build has no mods folder, so these hooks do nothing. */
+#include "pc/mods.h"
+void pc_mods_init(void) {}
+void pc_mods_update(void) {}
+void pc_mods_css_enter(void) {}
+void pc_mods_css_exit(void) {}
+bool pc_mods_menu_open(void) { return false; }
+void* pc_mods_fighter_joint(int player, int kind, void* base_joint) {
+    (void) player;
+    (void) kind;
+    (void) base_joint;
+    return NULL;
+}
+bool pc_mods_fighter_matanim(int player, int kind, void** matanim) {
+    (void) player;
+    (void) kind;
+    (void) matanim;
+    return false;
+}
+void pc_mods_scene_reset(void) {}

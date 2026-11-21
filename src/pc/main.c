@@ -25,6 +25,7 @@
 #include "pc/pc.h"
 #include "pc/android_hooks.h"
 #include "pc/launcher.h"
+#include "pc/mods.h"
 
 int melee_main(void);
 
@@ -696,6 +697,7 @@ MELEE_EXPORT int main(int argc, char* argv[]) {
     pc_android_set_launcher_active(false);
 
     pc_menu_init(info.window);
+    pc_mods_init(); /* MeleeForge pop-in skins: after RmlUi and the disc are up */
     pc_platform_init();
     aurora_card_set_present(card);
     int rc = melee_main();
